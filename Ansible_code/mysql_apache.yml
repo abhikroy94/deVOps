@@ -1,0 +1,27 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
+
+    - name: Install Apache Tomcat
+      unarchive:
+        src: /path/to/apache-tomcat.tar.gz
+        dest: /opt/
+        remote_src: no
+
+    - name: Set environment variables for Apache Tomcat
+      lineinfile:
+        path: /etc/environment
+        line: "CATALINA_HOME=/opt/apache-tomcat"
+
+    - name: Start Apache Tomcat service
+      shell:
+        cmd: "{{ lookup('env', 'CATALINA_HOME') }}/bin/startup.sh"

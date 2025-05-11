@@ -1,0 +1,22 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install WebLogic
+      unarchive:
+        src: /path/to/weblogic.zip
+        dest: /opt/
+        remote_src: no
+
+    - name: Set environment variables for WebLogic
+      lineinfile:
+        path: /etc/environment
+        line: "{{ item }}"
+      with_items:
+        - "MW_HOME=/opt/weblogic"
+        - "WL_HOME=/opt/weblogic/wlserver"
+
+    - name: Run WebLogic Configuration Wizard
+      command: /opt/weblogic/configure.sh
+
+    - name: Start WebLogic Admin Server
+      command: /opt/weblogic/startWebLogic.sh

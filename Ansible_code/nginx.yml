@@ -1,0 +1,23 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+
+    - name: Copy Nginx configuration file
+      copy:
+        src: /path/to/nginx.conf
+        dest: /etc/nginx/nginx.conf
+
+    - name: Restart Nginx service
+      service:
+        name: nginx
+        state: restarted
